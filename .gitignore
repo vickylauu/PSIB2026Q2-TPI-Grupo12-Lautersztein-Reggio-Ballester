@@ -1,0 +1,10 @@
+# Datos: no se suben al repositorio (se descargan con kagglehub, ver README)
+dataset/
+*.zip
+# Salidas generadas por los notebooks
+*.csv
+*.npz
+# Archivos temporales
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store
