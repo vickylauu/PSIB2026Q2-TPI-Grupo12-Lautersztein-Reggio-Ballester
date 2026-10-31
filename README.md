@@ -20,8 +20,9 @@ Los datos **no se incluyen en el repositorio**. El primer notebook los descarga 
 
 ```
 notebooks/
-  01_contextualizacion_preprocesamiento.ipynb   Módulo 1: caracterización del dataset y corrección de iluminación
-requirements.txt                                Dependencias
+  01_contextualizacion_preprocesamiento.ipynb  Módulo 1: caracterización del dataset y corrección de iluminación
+  02_segmentacion.ipynb                        Módulo 2: segmentación de núcleos (HSV y k-means en Lab)
+requirements.txt                               Dependencias
 ```
 
 ## Instalación y ejecución
@@ -40,6 +41,6 @@ jupyter notebook notebooks/01_contextualizacion_preprocesamiento.ipynb
 | Módulo | Contenido | Estado |
 |---|---|---|
 | 1 | Contextualización y preprocesamiento (corrección de iluminación) | Hecho |
-| 2 | Segmentación de núcleos (HSV y k-means en Lab) | Pendiente |
+| 2 | Segmentación de núcleos (HSV y k-means en Lab) | Código listo, a correr en Colab con datos reales para completar conclusiones |
 | 3 | Extracción de descriptores (forma, color, textura) | Pendiente |
 | 4 | Clasificación y evaluación | Pendiente |
