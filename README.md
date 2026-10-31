@@ -41,6 +41,6 @@ jupyter notebook notebooks/01_contextualizacion_preprocesamiento.ipynb
 | Módulo | Contenido | Estado |
 |---|---|---|
 | 1 | Contextualización y preprocesamiento (corrección de iluminación) | Hecho |
-| 2 | Segmentación de núcleos (HSV y k-means en Lab) | Código listo, a correr en Colab con datos reales para completar conclusiones |
+| 2 | Segmentación de núcleos (HSV y k-means en Lab) | Hecho |
 | 3 | Extracción de descriptores (forma, color, textura) | Pendiente |
 | 4 | Clasificación y evaluación | Pendiente |
