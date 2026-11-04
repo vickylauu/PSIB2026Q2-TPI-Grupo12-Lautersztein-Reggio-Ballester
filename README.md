@@ -21,7 +21,8 @@ Los datos **no se incluyen en el repositorio**. El primer notebook los descarga 
 ```
 notebooks/
   01_contextualizacion_preprocesamiento.ipynb  Módulo 1: caracterización del dataset y corrección de iluminación
-  02_segmentacion.ipynb                        Módulo 2: segmentación de núcleos (HSV y k-means en Lab)
+  02_segmentacion.ipynb                        Módulo 2: segmentación de núcleos (HSV y k-means en Lab; sección 5: k-means global sin referencia)
+  03_descriptores.ipynb                        Módulo 3: descriptores de forma, color y textura (GLCM, LBP) + experimento de compresión JPEG
 requirements.txt                               Dependencias
 ```
 
@@ -29,7 +30,7 @@ requirements.txt                               Dependencias
 
 **Opción 1: Google Colab (recomendada).** Abrir el notebook en Colab y ejecutar todas las celdas en orden (Entorno de ejecución → Ejecutar todas). Las dependencias ya vienen instaladas.
 
-**Opción 2: local**, con Python 3.10 o superior:
+**Opción 2: local**, con Python 3.10 o superior (los notebooks se corren en orden; el 03 genera `modulo3_descriptores.csv`, que usa el Módulo 4):
 
 ```bash
 pip install -r requirements.txt
@@ -41,6 +42,6 @@ jupyter notebook notebooks/01_contextualizacion_preprocesamiento.ipynb
 | Módulo | Contenido | Estado |
 |---|---|---|
 | 1 | Contextualización y preprocesamiento (corrección de iluminación) | Hecho |
-| 2 | Segmentación de núcleos (HSV y k-means en Lab) | Hecho |
-| 3 | Extracción de descriptores (forma, color, textura) | Pendiente |
+| 2 | Segmentación de núcleos: k-means global en (a*, b*), independiente de la segmentación de referencia (que falla en Pro-B) | Hecho |
+| 3 | Extracción de descriptores (forma, color, textura GLCM/LBP) y efecto de la compresión JPEG | Hecho |
 | 4 | Clasificación y evaluación | Pendiente |
