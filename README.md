@@ -155,6 +155,17 @@ La semilla de *k*-means está fija (42), así que el notebook es reproducible.
 
 **Salida:** `modulo3_descriptores.csv` (3.256 filas × 28 descriptores + `archivo`, `subtipo`, `clase`). **Es la entrada del Módulo 4.**
 
+### Módulo 3b · Reconstrucción tomográfica (simulación)
+`notebooks/03b_reconstruccion.ipynb`
+
+**Qué hace.** Como los frotis no se adquieren por proyecciones, la etapa de reconstrucción se evalúa con una **simulación**: a cada canal RGB se le calcula la transformada de Radon (sinograma), se reconstruye con **SBP** (retroproyección simple), **FBP** (filtro rampa) y **SART** (2 iteraciones, λ = 0,15) usando 180, 90, 45 y 18 proyecciones, y la imagen reconstruida (con calibración lineal de intensidad) pasa por el pipeline completo del Módulo 3. Mide PSNR, SSIM, Dice de núcleos y cambio relativo de los descriptores clave, sobre 32 imágenes (8 por subtipo). No genera archivos que usen otros módulos.
+
+**Hallazgos clave**
+- **SBP** deja la imagen borrosa con cualquier cantidad de proyecciones y destruye la segmentación (Dice ≈ 0,16).
+- **FBP con 180 proyecciones** es casi transparente para forma y color (Dice 0,985, cambios ~1–2 %); con menos proyecciones aparecen rayas y todo se degrada (Dice 0,43 con 18).
+- **SART** (2 iteraciones) no supera a FBP con muestreo completo; con pocas proyecciones altera menos la forma y el color, pero suaviza más la textura.
+- **La textura GLCM es lo más sensible** (cambio de contraste ~34 % incluso con FBP y 180 proyecciones), igual que en el experimento de compresión.
+
 ---
 
 ### Módulo 4 · Clasificación y evaluación
@@ -198,6 +209,7 @@ notebooks/
   01_contextualizacion_preprocesamiento.ipynb   Módulo 1: dataset y corrección de iluminación
   02_segmentacion.ipynb                         Módulo 2: segmentación de núcleos (k-means global en a*, b*)
   03_descriptores.ipynb                         Módulo 3: descriptores de forma, color y textura + compresión JPEG
+  03b_reconstruccion.ipynb                      Módulo 3b: reconstrucción tomográfica simulada (SBP, FBP, SART)
   04_clasificacion_evaluacion.ipynb             Módulo 4: reglas de umbral, votación y evaluación
 requirements.txt                                Dependencias
 ```
