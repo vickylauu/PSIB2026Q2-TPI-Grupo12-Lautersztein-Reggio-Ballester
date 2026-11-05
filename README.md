@@ -44,4 +44,4 @@ jupyter notebook notebooks/01_contextualizacion_preprocesamiento.ipynb
 | 1 | Contextualización y preprocesamiento (corrección de iluminación) | Hecho |
 | 2 | Segmentación de núcleos: k-means global en (a*, b*), independiente de la segmentación de referencia (que falla en Pro-B) | Hecho |
 | 3 | Extracción de descriptores (forma, color, textura GLCM/LBP) y efecto de la compresión JPEG | Hecho |
-| 4 | Clasificación y evaluación | Pendiente |
+| 4 | Clasificación y evaluación | Hecho |
