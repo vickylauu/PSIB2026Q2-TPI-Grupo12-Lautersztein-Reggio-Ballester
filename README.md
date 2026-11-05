@@ -23,6 +23,7 @@ notebooks/
   01_contextualizacion_preprocesamiento.ipynb  Módulo 1: caracterización del dataset y corrección de iluminación
   02_segmentacion.ipynb                        Módulo 2: segmentación de núcleos (HSV y k-means en Lab; sección 5: k-means global sin referencia)
   03_descriptores.ipynb                        Módulo 3: descriptores de forma, color y textura (GLCM, LBP) + experimento de compresión JPEG
+  04_clasificacion_evaluacion.ipynb            Módulo 4: 
 requirements.txt                               Dependencias
 ```
 
