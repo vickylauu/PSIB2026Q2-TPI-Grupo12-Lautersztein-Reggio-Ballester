@@ -10,7 +10,7 @@ Integrantes: Victoria Lautersztein (62437), María Reggio (62303), Rosario Balle
 
 ## Descripción
 
-Algoritmo **clásico e interpretable** (sin redes neuronales ni modelos de aprendizaje automático) que:
+Algoritmo **clásico e interpretable** que:
 
 1. corrige la iluminación de cada imagen,
 2. segmenta los núcleos de los leucocitos,
@@ -74,7 +74,6 @@ Los datos **no se incluyen en el repositorio**. Los notebooks 01–03 los descar
 ### Módulo 1 · Contextualización y preprocesamiento
 `notebooks/01_contextualizacion_preprocesamiento.ipynb`
 
-**Qué hace**
 - **Caracteriza el dataset:** resolución y formato, ejemplos por subtipo, histogramas RGB/HSV por clase, uniformidad de la iluminación (campo de iluminación del canal V: coeficiente de variación y cociente centro/borde) y variabilidad de la tinción (medias de H, S, a\*, b\* por subtipo).
 - **Compara tres correcciones de iluminación**, todas aplicadas **sólo sobre V** (H y S quedan intactos para no alterar el color de la tinción):
 
@@ -101,7 +100,6 @@ Los datos **no se incluyen en el repositorio**. Los notebooks 01–03 los descar
 ### Módulo 2 · Segmentación de núcleos
 `notebooks/02_segmentacion.ipynb`
 
-**Qué hace**
 - **Secciones 1–4 (segmentación dentro de la referencia del dataset):** usa la segmentación de referencia como región de interés y compara dos métodos:
   1. **Otsu sobre S** (saturación) + apertura morfológica + descarte de componentes chicas.
   2. ***k*-means (k = 2) en el plano (a\*, b\*)** de CIE Lab; el cluster de mayor croma es el núcleo.
@@ -128,7 +126,6 @@ Los datos **no se incluyen en el repositorio**. Los notebooks 01–03 los descar
 ### Módulo 3 · Extracción de descriptores
 `notebooks/03_descriptores.ipynb`
 
-**Qué hace**
 1. **Diagnóstico de la referencia del dataset:** en Pro-B ocupa una mediana de 1,1 % de la imagen (vs. 8–21 % en el resto) y está vacía en 146 imágenes. Justifica la segmentación sin referencia del Módulo 2.
 2. **Intento de segmentar la célula completa** (núcleo + citoplasma) para medir la relación núcleo/citoplasma, haciendo crecer cada núcleo sobre los píxeles teñidos dentro de un anillo proporcional a su radio. **No cumple el criterio de aceptación fijado de antemano** (Dice ≥ 0,70 y Spearman ≥ 0,6): la referencia del dataset marca prácticamente sólo el núcleo, así que no hay contra qué validar el citoplasma. **Se descarta** la relación núcleo/citoplasma y se usan `n_nucleos` y `frac_nuclear` en su lugar.
 3. **Calcula 28 descriptores por imagen** (forma: mediana por núcleo, excluyendo los que tocan el borde):
@@ -158,7 +155,7 @@ La semilla de *k*-means está fija (42), así que el notebook es reproducible.
 ### Módulo 3b · Reconstrucción tomográfica (simulación)
 `notebooks/03b_reconstruccion.ipynb`
 
-**Qué hace.** Como los frotis no se adquieren por proyecciones, la etapa de reconstrucción se evalúa con una **simulación**: a cada canal RGB se le calcula la transformada de Radon (sinograma), se reconstruye con **SBP** (retroproyección simple), **FBP** (filtro rampa) y **SART** (2 iteraciones, λ = 0,15) usando 180, 90, 45 y 18 proyecciones, y la imagen reconstruida (con calibración lineal de intensidad) pasa por el pipeline completo del Módulo 3. Mide PSNR, SSIM, Dice de núcleos y cambio relativo de los descriptores clave, sobre 32 imágenes (8 por subtipo). No genera archivos que usen otros módulos.
+Como los frotis no se adquieren por proyecciones, la etapa de reconstrucción se evalúa con una **simulación**: a cada canal RGB se le calcula la transformada de Radon (sinograma), se reconstruye con **SBP** (retroproyección simple), **FBP** (filtro rampa) y **SART** (2 iteraciones, λ = 0,15) usando 180, 90, 45 y 18 proyecciones, y la imagen reconstruida (con calibración lineal de intensidad) pasa por el pipeline completo del Módulo 3. Mide PSNR, SSIM, Dice de núcleos y cambio relativo de los descriptores clave, sobre 32 imágenes (8 por subtipo). No genera archivos que usen otros módulos.
 
 **Hallazgos clave**
 - **SBP** deja la imagen borrosa con cualquier cantidad de proyecciones y destruye la segmentación (Dice ≈ 0,16).
@@ -171,7 +168,6 @@ La semilla de *k*-means está fija (42), así que el notebook es reproducible.
 ### Módulo 4 · Clasificación y evaluación
 `notebooks/04_clasificacion_evaluacion.ipynb`
 
-**Qué hace**
 1. Carga `modulo3_descriptores.csv` (en Colab lo pide para subir si no está) y lo divide **70 % ajuste (2.279) / 30 % prueba (977)**, estratificado por clase. **La prueba no se usa para nada hasta la evaluación final.**
 2. **Análisis estadístico en ajuste:** prueba de Mann–Whitney bilateral para cada descriptor, corrección por FDR de Benjamini–Hochberg (α = 0,05) y AUC univariado. 22 de los 28 descriptores resultan significativos.
 3. **Selección de descriptores:** ordena por AUC y descarta los redundantes (|Spearman| por encima de un límite).
@@ -219,17 +215,6 @@ Los CSV y JSON generados no se suben al repositorio (ver `.gitignore`).
 ## Instalación y ejecución
 
 Los notebooks se corren **en orden**. Cada uno copia las funciones que necesita de los anteriores, así que se puede ejecutar solo; la única dependencia entre notebooks es que el **04 necesita `modulo3_descriptores.csv`**, generado por el 03.
-
-**Opción 1: Google Colab (recomendada).** Abrir el notebook en Colab y ejecutar todas las celdas (Entorno de ejecución → Ejecutar todas). Las dependencias ya vienen instaladas. Para el Módulo 4, descargar `modulo3_descriptores.csv` del Colab del Módulo 3 y subirlo cuando el notebook lo pida.
-
-**Opción 2: local**, con Python 3.10 o superior:
-
-```bash
-pip install -r requirements.txt
-jupyter notebook notebooks/
-```
-
-El Módulo 3 recorre las 3.256 imágenes varias veces y tarda unos minutos.
 
 ## Limitaciones
 
